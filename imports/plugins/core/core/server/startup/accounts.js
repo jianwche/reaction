@@ -20,7 +20,7 @@ export default function startup() {
    * http://docs.meteor.com/#/full/accounts_validateloginattempt
    */
 
-  Accounts.validateLoginAttempt((attempt) => {
+  Accounts.validateLoginAttempt(attempt => {
     if (!attempt.allowed) {
       return false;
     }
@@ -39,7 +39,7 @@ export default function startup() {
 
     if (loginEmail && loginEmail === adminEmail) {
       // filter out the matching login email from any existing emails
-      const userEmail = _.filter(attempt.user.emails, (email) => email.address === loginEmail);
+      const userEmail = _.filter(attempt.user.emails, email => email.address === loginEmail);
 
       // check if the email is verified
       if (!userEmail.length || !userEmail[0].verified) {
@@ -55,7 +55,7 @@ export default function startup() {
    * creates a login type "anonymous"
    * default for all unauthenticated visitors
    */
-  Accounts.registerLoginHandler((options) => {
+  Accounts.registerLoginHandler(options => {
     if (!options.anonymous) return {};
 
     const stampedToken = Accounts._generateStampedLoginToken();
@@ -90,6 +90,7 @@ export default function startup() {
     const roles = {};
     const additionals = {
       name: options && options.name,
+      metafields: options && options.metafields,
       profile: Object.assign({}, options && options.profile)
     };
     if (!user.emails) user.emails = [];
@@ -164,11 +165,14 @@ export default function startup() {
       // send a welcome email to new users,
       // but skip the first default admin user and anonymous users
       // (default admins already get a verification email)
-      if (userDetails.emails && userDetails.emails.length > 0
-        && (!(Meteor.users.find().count() === 0) && !userDetails.profile.invited)) {
+      if (
+        userDetails.emails &&
+        userDetails.emails.length > 0 &&
+        (!(Meteor.users.find().count() === 0) && !userDetails.profile.invited)
+      ) {
         const token = Random.secret();
         Meteor.call("accounts/sendWelcomeEmail", shopId, user._id, token);
-        const defaultEmail = userDetails.emails.find((email) => email.provides === "default");
+        const defaultEmail = userDetails.emails.find(email => email.provides === "default");
         const when = new Date();
         const tokenObj = {
           address: defaultEmail.address,
@@ -192,7 +196,7 @@ export default function startup() {
    * Accounts.onLogin event
    * @param {Object} opts - user account creation options
    */
-  Accounts.onLogin((opts) => {
+  Accounts.onLogin(opts => {
     // run onLogin hooks
     // (the options object must be returned by all callbacks)
     const options = Hooks.Events.run("onLogin", opts);
@@ -202,11 +206,14 @@ export default function startup() {
     if (options.type !== "anonymous" && options.type !== "resume") {
       const userId = options.user._id;
 
-      Meteor.users.update({ _id: userId }, {
-        $pullAll: {
-          [`roles.${Reaction.getShopId()}`]: ["anonymous"]
+      Meteor.users.update(
+        { _id: userId },
+        {
+          $pullAll: {
+            [`roles.${Reaction.getShopId()}`]: ["anonymous"]
+          }
         }
-      });
+      );
 
       Logger.debug(`removed anonymous role from user: ${userId}`);
     }

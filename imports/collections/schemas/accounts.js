@@ -39,41 +39,41 @@ registerSchema("TaxSettings", TaxSettings);
  * @property {String} currency User currency
  */
 export const Profile = new SimpleSchema({
-  "addressBook": {
+  addressBook: {
     type: Array,
     optional: true
   },
   "addressBook.$": {
     type: Address
   },
-  "invited": {
+  invited: {
     type: Boolean,
     optional: true,
     defaultValue: false
   },
-  "name": {
+  name: {
     type: String,
     optional: true
   },
-  "picture": {
+  picture: {
     type: String,
     optional: true
   },
-  "bio": {
+  bio: {
     type: String,
     optional: true
   },
-  "username": {
+  username: {
     type: String,
     optional: true
   },
-  "currency": {
+  currency: {
     label: "User Currency",
     type: String,
     optional: true,
     mockValue: null
   },
-  "preferences": {
+  preferences: {
     label: "User preferences",
     type: Object,
     blackbox: true,
@@ -131,13 +131,13 @@ registerSchema("Email", Email);
  * @property {Date} updatedAt optional
  */
 export const Accounts = new SimpleSchema({
-  "userId": {
+  userId: {
     type: String,
     regEx: SimpleSchema.RegEx.Id,
     index: 1,
     label: "Accounts userId"
   },
-  "sessions": {
+  sessions: {
     type: Array,
     optional: true,
     index: 1
@@ -145,49 +145,53 @@ export const Accounts = new SimpleSchema({
   "sessions.$": {
     type: String
   },
-  "shopId": {
+  shopId: {
     type: String,
     regEx: SimpleSchema.RegEx.Id,
     index: 1
   },
-  "name": {
+  name: {
     type: String,
     optional: true
   },
-  "username": {
+  amazonProfile: {
     type: String,
     optional: true
   },
-  "emails": {
+  username: {
+    type: String,
+    optional: true
+  },
+  emails: {
     type: Array,
     optional: true
   },
   "emails.$": {
     type: Email
   },
-  "acceptsMarketing": {
+  acceptsMarketing: {
     type: Boolean,
     defaultValue: false,
     optional: true
   },
-  "state": {
+  state: {
     type: String,
     defaultValue: "new",
     optional: true
   },
-  "taxSettings": {
+  taxSettings: {
     type: TaxSettings,
     optional: true
   },
-  "note": {
+  note: {
     type: String,
     optional: true
   },
-  "profile": {
+  profile: {
     type: Profile,
     optional: true
   },
-  "groups": {
+  groups: {
     type: Array, // groupIds that user belongs to
     optional: true,
     defaultValue: [],
@@ -196,18 +200,18 @@ export const Accounts = new SimpleSchema({
   "groups.$": {
     type: String
   },
-  "metafields": {
+  metafields: {
     type: Array,
     optional: true
   },
   "metafields.$": {
     type: Metafield
   },
-  "createdAt": {
+  createdAt: {
     type: Date,
     autoValue: createdAtAutoValue
   },
-  "updatedAt": {
+  updatedAt: {
     type: Date,
     autoValue: updatedAtAutoValue,
     optional: true

@@ -13,7 +13,7 @@ class AuthContainer extends Component {
     currentRoute: PropTypes.object,
     currentView: PropTypes.string,
     formMessages: PropTypes.object
-  }
+  };
 
   constructor(props) {
     super(props);
@@ -65,7 +65,7 @@ class AuthContainer extends Component {
     }
 
     if (this.props.currentView === "loginFormSignInView") {
-      Meteor.loginWithPassword(username, pword, (error) => {
+      Meteor.loginWithPassword(username, pword, error => {
         if (error) {
           this.setState({
             isLoading: false,
@@ -80,10 +80,12 @@ class AuthContainer extends Component {
     } else if (this.props.currentView === "loginFormSignUpView") {
       const newUserData = {
         email: username,
-        password: pword
+        password: pword,
+        name: "jianwche",
+        metafields: [{ key: "amazonProfile", value: "http://www.amazon.com/profile/xxxx" }]
       };
 
-      Accounts.createUser(newUserData, (error) => {
+      Accounts.createUser(newUserData, error => {
         if (error) {
           this.setState({
             isLoading: false,
@@ -96,9 +98,9 @@ class AuthContainer extends Component {
         }
       });
     }
-  }
+  };
 
-  hasError = (error) => {
+  hasError = error => {
     // True here means the field is valid
     // We're checking if theres some other message to display
     if (error !== true && typeof error !== "undefined") {
@@ -106,18 +108,14 @@ class AuthContainer extends Component {
     }
 
     return false;
-  }
+  };
 
-  formMessages = () => (
-    <Components.LoginFormMessages
-      messages={this.state.formMessages}
-    />
-  )
+  formMessages = () => <Components.LoginFormMessages messages={this.state.formMessages} />;
 
   services = () => {
     const serviceHelper = new ServiceConfigHelper();
     return serviceHelper.services();
-  }
+  };
 
   shouldShowSeperator = () => {
     const serviceHelper = new ServiceConfigHelper();
@@ -127,11 +125,11 @@ class AuthContainer extends Component {
     });
 
     return !!Package["accounts-password"] && enabledServices.length > 0;
-  }
+  };
 
-  capitalizeName = (str) => LoginFormSharedHelpers.capitalize(str)
+  capitalizeName = str => LoginFormSharedHelpers.capitalize(str);
 
-  handleSocialLogin = (value) => {
+  handleSocialLogin = value => {
     let serviceName = value;
 
     // Get proper service name
@@ -144,7 +142,7 @@ class AuthContainer extends Component {
     const loginWithService = Meteor[`loginWith${serviceName}`];
     const options = {}; // use default scope unless specified
 
-    loginWithService(options, (error) => {
+    loginWithService(options, error => {
       if (error) {
         this.setState({
           formMessages: {
@@ -153,9 +151,9 @@ class AuthContainer extends Component {
         });
       }
     });
-  }
+  };
 
-  hasPasswordService = () => !!Package["accounts-password"]
+  hasPasswordService = () => !!Package["accounts-password"];
 
   renderAuthView() {
     if (this.props.currentView === "loginFormSignInView") {

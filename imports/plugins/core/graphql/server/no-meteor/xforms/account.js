@@ -8,14 +8,11 @@ export const assocAccountOpaqueId = assocOpaqueId(namespaces.Account);
 export const decodeAccountOpaqueId = decodeOpaqueIdForNamespace(namespaces.Account);
 export const encodeAccountOpaqueId = encodeOpaqueId(namespaces.Account);
 
-export const mergeAddressBookToProfile = (item) =>
-  assocPath(["profile", "addressBook"], item.addressBook, item);
+export const mergeAddressBookToProfile = item => assocPath(["profile", "addressBook"], item.addressBook, item);
 
-export const mergeCurrencyToProfile = (item) =>
-  assocPath(["profile", "currency"], item.currency, item);
+export const mergeCurrencyToProfile = item => assocPath(["profile", "currency"], item.currency, item);
 
-export const mergePreferencesToProfile = (item) =>
-  assocPath(["profile", "preferences"], item.preferences, item);
+export const mergePreferencesToProfile = item => assocPath(["profile", "preferences"], item.preferences, item);
 
 export const xformAccountInput = pipe(
   assocAccountInternalId,

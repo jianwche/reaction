@@ -15,11 +15,11 @@ class SignUp extends Component {
     onFormSubmit: PropTypes.func,
     onSignInClick: PropTypes.func,
     uniqueId: PropTypes.string
-  }
+  };
 
   static defaultProps = {
     hasSwitchLinks: true
-  }
+  };
 
   constructor(props) {
     super(props);
@@ -37,13 +37,13 @@ class SignUp extends Component {
     this.setState({
       [field]: value
     });
-  }
+  };
 
-  handleSubmit = (event) => {
+  handleSubmit = event => {
     if (this.props.onFormSubmit) {
       this.props.onFormSubmit(event, this.state.email, this.state.password);
     }
-  }
+  };
 
   renderEmailErrors() {
     if (this.props.onError(this.props.messages.errors && this.props.messages.errors.email)) {
@@ -63,24 +63,15 @@ class SignUp extends Component {
       <span className="help-block">
         {this.props.onError(this.props.messages.errors && this.props.messages.errors.password) &&
           this.props.messages.errors.password.map((error, i) => (
-            <Components.Translation
-              key={i}
-              defaultValue={error.reason}
-              i18nKey={error.i18nKeyReason}
-            />
-          ))
-        }
+            <Components.Translation key={i} defaultValue={error.reason} i18nKey={error.i18nKeyReason} />
+          ))}
       </span>
     );
   }
 
   renderFormMessages() {
     if (this.props.loginFormMessages) {
-      return (
-        <div>
-          {this.props.loginFormMessages()}
-        </div>
-      );
+      return <div>{this.props.loginFormMessages()}</div>;
     }
   }
 
@@ -109,7 +100,6 @@ class SignUp extends Component {
     if (this.props.hasPasswordService()) {
       return (
         <form className="login-form" onSubmit={this.handleSubmit} noValidate>
-
           {this.renderFormMessages()}
 
           <div className={emailClasses}>
@@ -138,16 +128,14 @@ class SignUp extends Component {
             {this.renderPasswordErrors()}
           </div>
 
-          <div className="form-group">
-            {this.renderSpinnerOnWait()}
-          </div>
+          <div className="form-group">{this.renderSpinnerOnWait()}</div>
 
-          {this.props.hasSwitchLinks &&
+          {this.props.hasSwitchLinks && (
             <div className="form-group">
               <Components.Button
                 tagName="span"
                 className={{
-                  "btn": false,
+                  btn: false,
                   "btn-default": false
                 }}
                 label="Sign In"
@@ -156,7 +144,7 @@ class SignUp extends Component {
                 onClick={this.props.onSignInClick}
               />
             </div>
-          }
+          )}
         </form>
       );
     }
@@ -183,7 +171,6 @@ class SignUp extends Component {
         </div>
 
         {this.renderForm(emailClasses, passwordClasses)}
-
       </div>
     );
   }
